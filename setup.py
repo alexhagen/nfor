@@ -3,7 +3,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-requirements = ['numpy']
+requirements = ['numpy', 'tqdm']
 
 setup(name='nfor',
       version=0.1,
