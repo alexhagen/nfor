@@ -1,17 +1,22 @@
 """NFor module documentation."""
 import itertools
+import tqdm
 from multiprocessing import Pool
 
 class NFor:
     """``NFor`` - An iterator for nested for loops (high dimensional grids)."""
-    def __init__(self, variables):
+    def __init__(self, variables, progress=False):
         """Initialize the ``nfor`` object``.
 
         :param list variables: A list of arrays/lists, where every combination
             of every element is desired in the high dimensional grid.
+        :param bool progress: Whether to visualize progress with ``tqdm``
         """
         self.combinations = list(itertools.product(*variables))
         self.len = len(self.combinations)
+        self.progress = progress
+        if progress:
+            self.pbar = tqdm.tqdm(total=self.len)
         self.counter = 0
 
     def __iter__(self):
@@ -22,6 +27,8 @@ class NFor:
         if self.counter < self.len:
             combination = self.combinations[self.counter]
             self.counter += 1
+            if self.progress:
+                self.pbar.update()
         else:
             raise StopIteration
         return combination
